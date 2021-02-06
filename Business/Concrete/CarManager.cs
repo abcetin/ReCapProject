@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,28 @@ namespace Business.Concrete
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
+        }
+        public void Add(Car car)
+        {
+            if (car.CarName.Length <= 2 || car.DailyPrice <= 0)
+            {
+                Console.WriteLine("Ekleme Kriterlerinde Hata Var!");
+            }
+            else
+            {
+                _carDal.Add(car);
+                Console.WriteLine("Başarıyla Eklendi!");
+            }
+        }
+
+        public List<Car> GetCarsByBrandId(int id)
+        {
+            return _carDal.GetAll(p => p.BrandId == id);
+        }
+
+        public List<Car> GetCarsByColorId(int id)
+        {
+            return _carDal.GetAll(p => p.ColorId == id);
         }
     }
 }
