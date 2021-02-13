@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
+using Business.Constans;
 using Core.DataAccess;
 using Core.Manager;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -21,56 +23,61 @@ namespace Business.Concrete
             _carDal = carDal;
         }
             
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+           return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.Listed);
         }
-        public void Add(Car entity)
+        public IResult Add(Car entity)
         {
             if (entity.CarName.Length <=2 || entity.DailyPrice <1)
             {
-                Console.WriteLine("Şartlar Sağlanamadı");
+                return new ErrorResult(Messages.Error);
             }
             else
             {
                 _carDal.Add(entity);
-                Console.WriteLine("{0} : Başarıyla Eklendi",entity.CarName);
+                return new SuccessResult(Messages.Added);
+
             }
         }
 
-        public void Update(Car entity)
+        public IResult Update(Car entity)
         {
-            _carDal.Update(entity);
+            if (entity.CarName.Length <= 2 || entity.DailyPrice < 1)
+            {
+                return new ErrorResult(Messages.Error);
+            }
+            else
+            {
+                _carDal.Update(entity);
+                return new SuccessResult(Messages.Updated);   
+
+            }
+           
         }
 
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        public IDataResult<Car> Get(Expression<Func<Car, bool>> filter)
         {
             throw new NotImplementedException();
         }
-
-        public Car Get(Expression<Func<Car, bool>> filter)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            throw new NotImplementedException();
-        }
-        public List<Car> GetCarsByBrandId(int id)
-        {
-            return _carDal.GetAll(p=>p.BrandId == id);
+            return new SuccessDataResult<List<Car>>( _carDal.GetAll(p=>p.BrandId == id),Messages.Listed);
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetAll((p => p.ColorId == id));
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll((p => p.ColorId == id)),Messages.Listed);
         }
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>( _carDal.GetCarDetails());
         }
 
-        public void Delete(Car entity)
+        public IResult Delete(Car entity)
         {
             _carDal.Delete(entity);
-            Console.WriteLine("{0} : Başarıyla Silindi", entity.CarName);
+            return new SuccessResult(Messages.Deleted);
         }
     }
 }
