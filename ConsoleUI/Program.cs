@@ -15,6 +15,7 @@ namespace ConsoleUI
             //operations.GetRentAlDetail();
             //operations.GetAllCar();
             //operations.GetCarDetail();
+            operations.GetByBrandId(2);
             //operations.AddCar();
             //operations.DeleteCar(4017);
             //operations.UpdateCar(2012);

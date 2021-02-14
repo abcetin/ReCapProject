@@ -69,6 +69,25 @@ namespace ConsoleUI
             }
 
         }
+        public void GetByBrandId(int id)
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var result = carManager.GetCarsByBrandId(id);
+            foreach (var car in result.Data)
+            {
+                if (result.Success == true)
+                {
+                    Console.WriteLine("----------------------------------------------------------- -");
+                    Console.WriteLine("{0} ,{1}", car.CarName,car.BrandId);
+                }
+                else
+                {
+                    Console.WriteLine(result.Message);
+                }
+            }
+
+        }
 
         public void GetCarDetail()
         {
