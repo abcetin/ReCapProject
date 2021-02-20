@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constans;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,19 +20,14 @@ namespace Business.Concrete
         {
             _userDal = userDal;
         }
-
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User entity)
         {
-            if (entity.FirstName.Length < 2 || entity.Password.Length < 8)
-            {
-                return new ErrorResult(Messages.Error);
-            }
-            else
-            {
-                _userDal.Add(entity);
-                return new SuccessResult(Messages.Added);
 
-            }
+            _userDal.Add(entity);
+            return new SuccessResult(Messages.Added);
+
+
         }
 
         public IResult Delete(User entity)
@@ -48,7 +45,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<UserDetailDto>>(_userDal.GetUserDetails());
         }
-
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User entity)
         {
             if (entity.FirstName.Length < 2 || entity.Password.Length < 8)
