@@ -24,6 +24,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental entity)
         {
+            var rental = new Rental();
+            if (entity.CarId == rental.CarId)
+            {
+                return new ErrorResult(Messages.Error);
+            }
 
             _rentalDal.Add(entity);
             return new SuccessResult(Messages.Added);
