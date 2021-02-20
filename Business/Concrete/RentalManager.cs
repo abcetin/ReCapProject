@@ -24,12 +24,8 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental entity)
         {
-           
-
             _rentalDal.Add(entity);
             return new SuccessResult(Messages.Added);
-
-
         }
 
         public IResult Delete(Rental entity)
