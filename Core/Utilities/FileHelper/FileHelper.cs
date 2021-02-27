@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Core.Utilities.Results;
+using Core.Utilities.Bussiness;
 
 namespace Core.Utilities.FileHelper
 {
@@ -11,7 +12,9 @@ namespace Core.Utilities.FileHelper
     {
         public  static string AddAsnyc(IFormFile file)
         {
+            
             var result = newPath(file);
+            
             try
             {
                 var sourcePath = Path.GetTempFileName();
@@ -87,6 +90,6 @@ namespace Core.Utilities.FileHelper
 
             return (result, $"\\Images\\{creatingUniqueFilename}");
         }
-
+        
     }
 }

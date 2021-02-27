@@ -27,7 +27,7 @@ namespace Business.Concrete
 
         public IResult Add(IFormFile file,CarImage entity)
         {
-            IResult result = BussinessRules.Run(CheckCarImages(entity.CarId),CheckCarId(entity.CarId));
+            IResult result = BussinessRules.Run(CheckCarImages(entity.CarId),CheckCarId(entity.CarId), CheckIfImageExtension(file.FileName));
             if (result!=null)
             {
                 return result;
@@ -122,6 +122,23 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.AnyCar);
             }
             return new SuccessResult();
+        }
+        private IResult CheckIfImageExtension(string file)
+        {
+            
+            string[] infos = { "jpg" , "png", "png","jfif" };
+            string[] parts;
+            parts = file.Split('.');
+            foreach (var info in infos)
+            {
+                Console.WriteLine(parts.Last());
+                if (parts.Last() == info)
+                {
+                    return new SuccessResult();
+                }
+            }
+            return new ErrorResult(Messages.FileExtension);
+            
         }
 
     }
