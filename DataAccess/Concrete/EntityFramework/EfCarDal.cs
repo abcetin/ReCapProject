@@ -3,7 +3,6 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +26,9 @@ namespace DataAccess.Concrete.EntityFramework
                                 CarName = c.CarName,
                                 BrandName = b.BrandName,
                                 ColorName = cr.ColorName,
-                                DailyPrice = c.DailyPrice
+                                DailyPrice = c.DailyPrice,
+                                
+                                
                             };
 
                 return query.ToList();

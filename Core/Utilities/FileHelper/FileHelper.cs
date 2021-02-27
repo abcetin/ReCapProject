@@ -38,8 +38,6 @@ namespace Core.Utilities.FileHelper
 
             try
             {
-                //File.Copy(sourcePath,result);
-
                 if (sourcePath.Length > 0)
                 {
                     using (var stream = new FileStream(result.newPath, FileMode.Create))

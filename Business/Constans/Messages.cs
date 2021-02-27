@@ -12,5 +12,6 @@ namespace Business.Constans
         public static string Listed = "Ürünler Başarıyla Listelendi";
         public static string Error = "Bir Hata Meydana Geldi Lütfen İşlemlerini Kontrol Ediniz!";
         public static string MaxImage="Bir Araca Ait En Fazla 5 Resim Olabilir";
+        public static string AnyCar = "Bu Id İle Araba Bulunmamaktadır";
     }
 }

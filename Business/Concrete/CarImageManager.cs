@@ -17,15 +17,17 @@ namespace Business.Concrete
     public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
+        ICarService _carService;
 
-        public CarImageManager(ICarImageDal carImageDal)
+        public CarImageManager(ICarImageDal carImageDal,ICarService carService)
         {
             _carImageDal = carImageDal;
+            _carService = carService;
         }
 
         public IResult Add(IFormFile file,CarImage entity)
         {
-            IResult result = BussinessRules.Run(CheckCarImages(entity.CarId),CheckImageNull(entity.CarId));
+            IResult result = BussinessRules.Run(CheckCarImages(entity.CarId),CheckCarId(entity.CarId));
             if (result!=null)
             {
                 return result;
@@ -40,14 +42,22 @@ namespace Business.Concrete
 
         public IResult Delete(CarImage entity)
         {
-            var delete = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwwroot")) + _carImageDal.Get(c => c.Id == entity.Id).ImagePath;
+            var delete = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwwroot\\Images")) + _carImageDal.Get(c => c.Id == entity.Id).ImagePath;
+            IResult result = BussinessRules.Run(FileHelper.DeleteAsync(delete));
             _carImageDal.Delete(entity);
             return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<CarImage>> GetAll()
         {
+            
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(), Messages.Listed);
+        }
+        public IDataResult<CarImage> Get(int id)
+        {
+            IResult result = BussinessRules.Run(CheckImageNull(id));
+            
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
         }
 
         public IDataResult<List<CarImage>> GetCarImages(int id)
@@ -70,17 +80,19 @@ namespace Business.Concrete
             _carImageDal.Update(entity);
             return new SuccessResult(Messages.Updated);
         }
-
+        
         private IDataResult<List<CarImage>> CheckImageNull(int id)
         {
+            string path = @"\Images\default.jpg";
+            
             try
             {
-                string path = @"..\\..\\..\\wwwwroot\\Images\\default.jpg";
-                var result = _carImageDal.GetAll(c => c.CarId==id).Any();
+                
+                var result = _carImageDal.GetAll(c => c.CarId == id).Any();
                 if (!result)
                 {
                     List<CarImage> carImage = new List<CarImage>();
-                    carImage.Add(new CarImage { CarId = id, ImagePath = path, Date = DateTime.Today });
+                    carImage.Add(new CarImage {CarId = id ,ImagePath = path,Date=DateTime.Today});
                     return new SuccessDataResult<List<CarImage>>(carImage);
                 }
             }
@@ -89,7 +101,7 @@ namespace Business.Concrete
 
                 return new ErrorDataResult<List<CarImage>>(ex.Message);
             }
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c=>c.CarId==id).ToList());
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == id).ToList());
         }
 
         private IResult CheckCarImages(int id)
@@ -102,7 +114,15 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-
+        private IResult CheckCarId(int id)
+        {
+            var result = _carService.GetById(id);
+            if (!result.Data.Any())
+            {
+                return new ErrorResult(Messages.AnyCar);
+            }
+            return new SuccessResult();
+        }
 
     }
 }

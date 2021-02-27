@@ -46,10 +46,6 @@ namespace Business.Concrete
 
         }
 
-        public IDataResult<Car> Get(Expression<Func<Car, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == id), Messages.Listed);
@@ -68,6 +64,11 @@ namespace Business.Concrete
         {
             _carDal.Delete(entity);
             return new SuccessResult(Messages.Deleted);
+        }
+
+        public IDataResult<List<Car>> GetById(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p=>p.Id == id),Messages.Listed);
         }
     }
 }
