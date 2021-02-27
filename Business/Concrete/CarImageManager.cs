@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constans;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Bussiness;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
@@ -25,6 +27,7 @@ namespace Business.Concrete
             _carService = carService;
         }
 
+        [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile file,CarImage entity)
         {
             IResult result = BussinessRules.Run(CheckCarImages(entity.CarId),CheckCarId(entity.CarId), CheckIfImageExtension(file.FileName));
@@ -72,6 +75,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(CheckImageNull(id).Data);
         }
 
+        [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile file, CarImage entity)
         {
             var update = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,"..\\..\\..\\wwwwroot"))+_carImageDal.Get(c=>c.Id == entity.Id).ImagePath;
