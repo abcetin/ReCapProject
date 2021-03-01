@@ -14,5 +14,12 @@ namespace Business.Constans
         public static string Error = "Bir Hata Meydana Geldi Lütfen İşlemlerini Kontrol Ediniz!";
         public static string MaxImage="Bir Araca Ait En Fazla 5 Resim Olabilir";
         public static string AnyCar = "Bu Id İle Araba Bulunmamaktadır";
+        public static string AuthorizationDenied = "Yetkiniz Bulunmamaktadır.";
+        public static string UserRegistered = "Kayıt İşlemi Başarılı";
+        public static string UserNotFound = "Kullanıcı Bulunamadı";
+        public static string PasswordError = "Parola Hatalı";
+        public static string SuccessfulLogin = "Giriş Başarılı";
+        public static string UserAlreadyExists = "Kullanıcı Zaten Var";
+        public static string AccessTokenCreated = "Erişim Jetonu Oluşturuldu";
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Core.Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -13,7 +14,7 @@ namespace DataAccess.Concrete.EntityFramework
     {
         public List<UserDetailDto> GetUserDetails() 
         {
-            using (RentaCarContext context = new RentaCarContext())
+            using (var context = new RentaCarContext())
             {
                 var query = from c in context.Customers
                            join u in context.Users
@@ -25,6 +26,24 @@ namespace DataAccess.Concrete.EntityFramework
                                LastName = u.LastName,
                                Email = u.Email
                            };
+                return query.ToList();
+            }
+        }
+
+        public List<OperationClaim> GetClaims(User user) //Gönderdiğimiz user ın claim lerini join operasyonuyla çektik
+        {
+            using (var context = new RentaCarContext())
+            {
+                var query = from operationclaim in context.OperationClaims
+                            join userOperationClaim in context.UserOperationClaims
+                            on operationclaim.Id equals userOperationClaim.OperationClaimId
+                            where userOperationClaim.UserId == user.Id
+                            select new OperationClaim
+                            {
+                                Id = operationclaim.Id,
+                                Name = operationclaim.Name
+                            };
+
                 return query.ToList();
             }
         }

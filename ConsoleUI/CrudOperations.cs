@@ -1,4 +1,5 @@
 ﻿using Business.Concrete;
+using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -134,7 +135,7 @@ namespace ConsoleUI
                 FirstName = "Hüseyin",
                 LastName = "ÇOBAN",
                 Email = "hc@gmail.com",
-                Password = "12332112"
+                //Password = "12332112"
             };
 
             var result = userManager.Add(user);
