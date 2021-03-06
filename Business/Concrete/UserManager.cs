@@ -21,6 +21,7 @@ namespace Business.Concrete
         {
             _userDal = userDal;
         }
+
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User entity)
         {
@@ -29,6 +30,12 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Added);
 
 
+        }
+
+        public void Add2(User user)
+        {
+            _userDal.Add(user);
+            //return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(User entity)
@@ -56,6 +63,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<UserDetailDto>>(_userDal.GetUserDetails());
         }
+
         [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User entity)
         {

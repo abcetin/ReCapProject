@@ -1,6 +1,8 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
 using Core.Entities;
+using Core.Extensions;
 using Core.Manager;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
@@ -10,6 +12,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -37,16 +40,13 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors(options => 
-            {
-                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000"));
-            });
             //services.AddSingleton<ICarService,CarManager>();
             //services.AddSingleton<ICarDal,EfCarDal>();
             //services.AddSingleton<IRentalService,RentalManager>();
             //services.AddSingleton<IRentalDal,EfRentalDal>();
             //services.AddSingleton<IUserService,UserManager>();
             //services.AddSingleton<IUserDal,EfUserDal>();
+
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -57,13 +57,15 @@ namespace WebAPI
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ValidIssuer = tokenOptions.Issure,
+                    ValidIssuer = tokenOptions.Issuer,
                     ValidAudience = tokenOptions.Audience,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                 };
             });
-            ServiceTool.Create(services);
+            services.AddDependencyResolvers(new ICoreModule[] { 
+                new CoreModule() 
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +76,6 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder=>builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

@@ -1,13 +1,13 @@
-﻿using Business.Constans;
-using Castle.DynamicProxy;
-using Core.Extensions;
-using Core.Utilities.Interceptors;
+﻿using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Castle.DynamicProxy;
+using Microsoft.Extensions.DependencyInjection;
+using Core.Extensions;
+using Business.Constans;
 
 namespace Business.BussinessAspect.Autofac
 {
@@ -27,7 +27,7 @@ namespace Business.BussinessAspect.Autofac
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
             foreach (var role in _roles)
             {
-                if (roleClaims.Contains(role))
+                if (roleClaims.Contains(role)) //Claimlerin içinde ilgili rol varsa metodu çalıştırmaya devam et
                 {
                     return;
                 }
