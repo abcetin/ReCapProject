@@ -10,12 +10,12 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CrudOperations operations = new CrudOperations();
+            //CrudOperations operations = new CrudOperations();
             //operations.AddUser();
             //operations.GetRentAlDetail();
             //operations.GetAllCar();
             //operations.GetCarDetail();
-            operations.GetByBrandId(2);
+            //operations.GetByBrandId(2);
             //operations.AddCar();
             //operations.DeleteCar(4017);
             //operations.UpdateCar(2012);

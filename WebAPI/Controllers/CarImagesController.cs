@@ -44,6 +44,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("getimagedetails")]
+        public IActionResult GetImageDetails(int id)
+        {
+            var result = _carImageService.GetCarImagesDetail(id);
+            if (result.Success == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {

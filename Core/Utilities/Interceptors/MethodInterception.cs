@@ -5,7 +5,8 @@ namespace Core.Utilities.Interceptors
 {
     public abstract class MethodInterception : MethodInterceptionBaseAttribute
     {
-        protected virtual void OnBefore(IInvocation invocation) { }
+        //invocation : bussiness metod
+        protected virtual void OnBefore(IInvocation invocation) { } //virtual metod ezilmeyi bekleyen metod 
         protected virtual void OnAfter(IInvocation invocation) { }
         protected virtual void OnException(IInvocation invocation, System.Exception e) { }
         protected virtual void OnSuccess(IInvocation invocation) { }
@@ -32,6 +33,5 @@ namespace Core.Utilities.Interceptors
             }
             OnAfter(invocation);
         }
-
     }
 }

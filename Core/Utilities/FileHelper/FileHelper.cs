@@ -84,11 +84,11 @@ namespace Core.Utilities.FileHelper
 
           
 
-            string path = Environment.CurrentDirectory + @"\wwwroot\Images";
+            string path = Environment.CurrentDirectory + @"/wwwroot/Images";
 
-            string result = $@"{path}\{creatingUniqueFilename}";
+            string result = $@"{path}/{creatingUniqueFilename}";
 
-            return (result, $"\\Images\\{creatingUniqueFilename}");
+            return (result, $"/images/{creatingUniqueFilename}");
         }
         
     }

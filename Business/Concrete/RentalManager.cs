@@ -8,6 +8,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -41,7 +42,11 @@ namespace Business.Concrete
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetail()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetail());
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetail(), Messages.Listed);
+        }
+        public IDataResult<List<Rental>> GetRentalById(int id)
+        {
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.CarId == id));
         }
 
         [ValidationAspect(typeof(RentalValidator))]
@@ -49,7 +54,6 @@ namespace Business.Concrete
         {
             _rentalDal.Update(entity);
             return new SuccessResult(Messages.Updated);
-
 
         }
     }

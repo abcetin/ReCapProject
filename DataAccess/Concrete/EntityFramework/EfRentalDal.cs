@@ -6,30 +6,36 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Entities.DTOs;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfRentalDal : EfEntityRepositoryBase<Rental, RentaCarContext>, IRentalDal
     {
-        public List<RentalDetailDto> GetRentalDetail()
+        public List<RentalDetailDto> GetRentalDetail(Expression<Func<CarDetailDto, bool>> filter = null)
         {
             using (RentaCarContext context = new RentaCarContext())
             {
-                var query = from r in context.Rentals
-                            join c in context.Cars
-                            on r.CarId equals c.Id
-                            join u in context.Users
-                            on r.CustomerId equals u.Id
-                            select new RentalDetailDto 
-                            {
-                                CarName = c.CarName,
-                                CustomerName = u.FirstName,
-                                RentDate = r.RentDate,
-                                ReturnDate = (DateTime)r.ReturnDate
-                            };
+                var result = from re in context.Rentals
+                             join us in context.Users
+                             on re.CustomerId equals us.Id
+                             join ca in context.Cars
+                             on re.CarId equals ca.Id
+                             join ba in context.Brands
+                            on ca.BrandId equals ba.BrandId
 
-                return query.ToList();
+                             select new RentalDetailDto
+                             {
+                                 Id = re.Id,
+                                 CarName = ($"{ba.BrandName} {ca.CarName}"),
+                                 UserName = ($"{us.FirstName} {us.LastName}"),
+                                 RentDate = re.RentDate,
+                                 ReturnDate = (DateTime)re.ReturnDate
+                             };
+                return result.ToList();
             }
         }
+
+       
     }
 }

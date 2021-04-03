@@ -32,9 +32,19 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getrentaldetail")]
-        public IActionResult GetRentalDetail() 
+        public IActionResult GetRentalDetails() 
         {
             var result = _rentalService.GetRentalDetail();
+            if (result.Success == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        [HttpGet("getrentaldetailbyid")]
+        public IActionResult GetRentalDetailsById(int id)
+        {
+            var result = _rentalService.GetRentalById(id);
             if (result.Success == true)
             {
                 return Ok(result);
@@ -57,6 +67,8 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public IActionResult AddRental(Rental rental) 
         {
+            rental.RentDate = DateTime.Now;
+            rental.ReturnDate = DateTime.Now.AddDays(1);
             var result = _rentalService.Add(rental);
             if (result.Success == true)
             {

@@ -9,8 +9,12 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface IUserService : IManagerBase<User>
+    public interface IUserService
     {
+        IDataResult<List<User>> GetAll();
+        IResult Add(User entity);
+        IResult Update(User entity);
+        IResult Delete(User entity);
         IDataResult<List<UserDetailDto>> GetUserDetail();
         List<OperationClaim> GetClaims(User user);
         User GetByMail(string email);

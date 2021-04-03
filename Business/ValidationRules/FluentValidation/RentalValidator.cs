@@ -20,19 +20,18 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(c => c.ReturnDate).GreaterThan(c => c.RentDate);
             RuleFor(c => c.CarId).Must(CheckCar).WithMessage("Bu Araç Halihazırda Kiralanmış Durumda Lütfen Başka Araç Seçiniz!");
         }
-        private bool CheckCar(int arg) 
+        private bool CheckCar(int id) 
         {
             RentaCarContext context = new RentaCarContext();
+            var check = context.Rentals.Where(c => c.CarId == id).Any();
 
-            var check = context.Rentals.Where(c => c.CarId == arg);
-
-            if (check == null)
+            if (check)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
             
         }
