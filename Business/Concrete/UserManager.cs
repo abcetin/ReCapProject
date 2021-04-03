@@ -4,6 +4,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Hashing;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -31,13 +32,6 @@ namespace Business.Concrete
 
 
         }
-
-        public void Add2(User user)
-        {
-            _userDal.Add(user);
-            //return new SuccessResult(Messages.Added);
-        }
-
         public IResult Delete(User entity)
         {
             _userDal.Delete(entity);
@@ -59,18 +53,33 @@ namespace Business.Concrete
             return _userDal.GetClaims(user);
         }
 
-        public IDataResult<List<UserDetailDto>> GetUserDetail()
+        public IDataResult<List<UserDetailDto>> GetUserByMail(string email)
         {
-            return new SuccessDataResult<List<UserDetailDto>>(_userDal.GetUserDetails());
+            return new SuccessDataResult<List<UserDetailDto>>(_userDal.GetUserDetails(u => u.Email == email));
+        }
+
+        public IDataResult<List<UserDetailDto>> GetUserDetail(int id)
+        {
+            return new SuccessDataResult<List<UserDetailDto>>(_userDal.GetUserDetails(u=>u.UserId==id));
         }
 
         [ValidationAspect(typeof(UserValidator))]
-        public IResult Update(User entity)
+        public IDataResult<User> Update(UserForRegisterDto userUpdateDto, string password)
         {
-            _userDal.Update(entity);
-            return new SuccessResult(Messages.Updated);
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            User user = _userDal.Get(u => u.Email == userUpdateDto.Email);
+            user.Email = userUpdateDto.Email;
+            user.FirstName = userUpdateDto.FirstName;
+            user.LastName = userUpdateDto.LastName;
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.Status = true;
+            _userDal.Update(user);
+            return new SuccessDataResult<User>(user, Messages.UserUpdated);
         }
 
-        
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -33,9 +34,20 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getdetail")]
-        public IActionResult GetUserDetail()
+        public IActionResult GetUserDetail(int id)
         {
-            var result = _userService.GetUserDetail();
+            var result = _userService.GetUserDetail(id);
+            if (result.Success == true)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyemail")]
+        public IActionResult GetByEmail(string  email)
+        {
+            var result = _userService.GetUserByMail(email);
             if (result.Success == true)
             {
                 return Ok(result);
@@ -66,14 +78,19 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
         [HttpPost("update")]
-        public IActionResult Update(User user)
+        public IActionResult Update(UserForRegisterDto user)
         {
-            var result = _userService.Update(user);
-            if (result.Success == true)
+            var userExists = _userService.GetUserByMail(user.Email);
+            if (!userExists.Success)
             {
-                return Ok(result);
+                return BadRequest(userExists.Message);
             }
-            return BadRequest(result);
+            var updateResult = _userService.Update(user, user.Password);
+            if (updateResult.Success)
+            {
+                return Ok(updateResult);
+            }
+            return BadRequest(updateResult.Message);
         }
     }
 }

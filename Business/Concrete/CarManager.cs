@@ -31,16 +31,16 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
-        //[SecuredOperation("car.add,admin")]
         public IDataResult<List<Car>> GetAll()
         {
             Thread.Sleep(2000);
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Listed);
         }
 
-        //[SecuredOperation("car.add,admin")]
+        
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
+        [SecuredOperation("car.add,admin")]
         public IResult Add(Car entity)
         {
 
@@ -50,6 +50,7 @@ namespace Business.Concrete
 
         [CacheRemoveAspect("ICarService.Get")]
         [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("car.list,admin")]
         public IResult Update(Car entity)
         {
 
@@ -59,7 +60,6 @@ namespace Business.Concrete
 
         }
 
-        //[SecuredOperation("car.list,admin")]
         [CacheAspect(duration: 10)]
         public IDataResult<List<CarDetailDto>> GetCarsByBrandName(string brandName, string colorName)
         {
@@ -89,6 +89,7 @@ namespace Business.Concrete
 
 
         [CacheRemoveAspect("ICarService.Get")]
+        [SecuredOperation("car.list,admin")]
         public IResult Delete(Car entity)
         {
             _carDal.Delete(entity);

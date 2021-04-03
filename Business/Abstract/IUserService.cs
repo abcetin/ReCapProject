@@ -13,12 +13,12 @@ namespace Business.Abstract
     {
         IDataResult<List<User>> GetAll();
         IResult Add(User entity);
-        IResult Update(User entity);
+        IDataResult<User> Update(UserForRegisterDto userUpdateDto, string password );
         IResult Delete(User entity);
-        IDataResult<List<UserDetailDto>> GetUserDetail();
+        IDataResult<List<UserDetailDto>> GetUserDetail(int id);
         List<OperationClaim> GetClaims(User user);
         User GetByMail(string email);
-        void Add2(User user);
+        IDataResult<List<UserDetailDto>> GetUserByMail(string email);
 
     }
 }

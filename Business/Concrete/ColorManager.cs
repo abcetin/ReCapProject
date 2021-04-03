@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BussinessAspect.Autofac;
 using Business.Constans;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -22,6 +23,7 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
+        [SecuredOperation("car.list,admin")]
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Color entity)
         {
@@ -29,6 +31,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("car.list,admin")]
         public IResult Delete(Color entity)
         {
             _colorDal.Delete(entity);
@@ -45,6 +48,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll(c=>c.ColorId==id));
         }
 
+        [SecuredOperation("car.list,admin")]
         public IResult Update(Color entity)
         {
             IResult result = BussinessRules.Run(CheckBrandId(entity.Id));

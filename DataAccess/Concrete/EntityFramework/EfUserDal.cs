@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Core.Entities.Concrete;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal: EfEntityRepositoryBase<User,RentaCarContext> , IUserDal
     {
-        public List<UserDetailDto> GetUserDetails() 
+        public List<UserDetailDto> GetUserDetails(Expression<Func<UserDetailDto, bool>> filter = null) 
         {
             using (var context = new RentaCarContext())
             {
@@ -26,7 +27,7 @@ namespace DataAccess.Concrete.EntityFramework
                                LastName = u.LastName,
                                Email = u.Email
                            };
-                return query.ToList();
+                return filter == null ? query.ToList() : query.Where(filter).ToList();
             }
         }
 
