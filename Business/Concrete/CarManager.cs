@@ -6,7 +6,6 @@ using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.DataAccess;
-using Core.Manager;
 using Core.Utilities.Bussiness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;

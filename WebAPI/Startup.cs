@@ -3,7 +3,6 @@ using Business.Concrete;
 using Core.DependencyResolvers;
 using Core.Entities;
 using Core.Extensions;
-using Core.Manager;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;

@@ -38,6 +38,13 @@ namespace Business.DependecyResolvers.Autofac
             builder.RegisterType<CardManager>().As<ICardService>().SingleInstance();
             builder.RegisterType<EfCardDal>().As<ICardDal>().SingleInstance();
 
+
+            builder.RegisterType<UserFindexManager>().As<IUserFindexService>().SingleInstance();
+            builder.RegisterType<EfUserFindexDal>().As<IUserFindexDal>().SingleInstance();
+
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimsSerivce>().SingleInstance();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimsDal>().SingleInstance();
+
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 

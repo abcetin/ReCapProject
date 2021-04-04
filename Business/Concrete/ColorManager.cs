@@ -3,7 +3,6 @@ using Business.BussinessAspect.Autofac;
 using Business.Constans;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.Manager;
 using Core.Utilities.Bussiness;
 using Core.Utilities.Results;
 using DataAccess.Abstract;

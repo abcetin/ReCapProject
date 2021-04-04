@@ -31,6 +31,7 @@ namespace DataAccess.Concrete.EntityFramework
                                 CarName = car.CarName,
                                 ModelYear = car.ModelYear,
                                 ColorName = color.ColorName,
+                                FindexPuan = car.FindexPuan,
                                 DailyPrice = car.DailyPrice,
                                 ImagePath = (from img in rentaCar.CarImages where img.CarId == car.Id select img.ImagePath).ToArray()
                             };

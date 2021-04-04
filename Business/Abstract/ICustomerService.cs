@@ -1,4 +1,4 @@
-﻿using Core.Manager;
+﻿
 using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
@@ -10,6 +10,7 @@ namespace Business.Abstract
     public interface ICustomerService 
     {
         IDataResult<List<Customer>> GetAll();
+        IDataResult<Customer> Get(int userId);
         IResult Add(Customer entity);
         IResult Update(Customer entity);
         IResult Delete(Customer entity);

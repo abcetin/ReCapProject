@@ -1,5 +1,4 @@
 ﻿using Core.Entities.Concrete;
-using Core.Manager;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
