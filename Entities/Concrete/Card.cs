@@ -8,10 +8,11 @@ namespace Entities.Concrete
     public class Card :IEntity
     {
         public int Id { get; set; }
-        public string CartOwner { get; set; }
-        public string CartNumber { get; set; }
-        public int Mounth { get; set; }
-        public int Year { get; set; }
-        public int CCV { get; set; }
+        public int UserId { get; set; }
+        public string CardOwner { get; set; }
+        public string CardNumber { get; set; }
+        public string Mounth { get; set; }
+        public string Year { get; set; }
+        public string CCV { get; set; }
     }
 }

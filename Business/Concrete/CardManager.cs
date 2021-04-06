@@ -13,17 +13,17 @@ namespace Business.Concrete
 {
     public class CardManager : ICardService
     {
-        ICardDal _cartDal;
+        ICardDal _cardDal;
         
-        public CardManager(ICardDal cartDal)
+        public CardManager(ICardDal cardDal)
         {
-            _cartDal = cartDal;
+            _cardDal = cardDal;
         }
 
         [ValidationAspect(typeof(CartValidator))]
         public IResult Add(Card entity)
         {
-            _cartDal.Add(entity);
+            _cardDal.Add(entity);
             return new SuccessResult(Messages.Added);
         }
 
@@ -34,7 +34,17 @@ namespace Business.Concrete
 
         public IDataResult<List<Card>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Card>>(_cardDal.GetAll());
+        }
+
+        public IDataResult<List<Card>> GetCardByUserId(int userId)
+        {
+            return new SuccessDataResult<List<Card>>(_cardDal.GetAll(c => c.UserId == userId));
+        }
+
+        public IDataResult<Card> GetCardById(int id)
+        {
+            return new SuccessDataResult<Card>(_cardDal.Get(c=>c.Id==id));
         }
 
         public IResult Update(Card entity)

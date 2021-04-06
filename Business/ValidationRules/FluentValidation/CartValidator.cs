@@ -12,10 +12,10 @@ namespace Business.ValidationRules.FluentValidation
         
         public CartValidator()
         {
-            RuleFor(c => c.CartNumber).NotEmpty();
-            RuleFor(c => c.CartNumber).MaximumLength(16);
-            RuleFor(c => c.CartNumber).MinimumLength(16);
-            RuleFor(c => c.CartOwner).NotEmpty();
+            RuleFor(c => c.CardNumber).NotEmpty();
+            RuleFor(c => c.CardNumber).MaximumLength(16);
+            RuleFor(c => c.CardNumber).MinimumLength(16);
+            RuleFor(c => c.CardOwner).NotEmpty();
             RuleFor(c => c.CCV).NotEmpty();
             RuleFor(c => c.Mounth).NotEmpty();
             RuleFor(c => c.Year).NotEmpty();
